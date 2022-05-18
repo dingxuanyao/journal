@@ -3,6 +3,8 @@
     <div :key="journal_item.id" v-for="journal_item in journal_items">
       <JournalItem
         @flip-completion="flipCompletion"
+        @delete-journal-item="deleteJournalItem"
+        @update-journal-item="updateJournalItem"
         :journal_item="journal_item"
       />
     </div>
@@ -20,10 +22,16 @@ export default {
     JournalItem,
   },
   methods: {
+    updateJournalItem(id, journal_item_updated) {
+      this.$emit("update-journal-item", id, journal_item_updated);
+    },
     flipCompletion(id) {
       this.$emit("flip-completion", id);
     },
+    deleteJournalItem(id) {
+      this.$emit("delete-journal-item", id);
+    },
   },
-  emits: ["flip-completion"],
+  emits: ["flip-completion", "delete-journal-item", "update-journal-item"],
 };
 </script>

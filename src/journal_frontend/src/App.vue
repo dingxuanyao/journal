@@ -1,26 +1,26 @@
 <template>
-  <!-- <img alt="Vue logo" src="./assets/logo.png"> -->
-  <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
-  <!-- <h1>HelloWorld</h1>
-  <Items :items="items"/> -->
   <div class="container">
-    <JournalItems @flip-completion="flipCompletion" :journal_items="journal_items"/>
+    <JournalItems
+      @flip-completion="flipCompletion"
+      @delete-journal-item="deleteJournalItem"
+      @update-journal-item="updateJournalItem"
+      :journal_items="journal_items"
+    />
   </div>
-
 </template>
 
 <script>
-import JournalItems from './components/JournalItems'
+import JournalItems from "./components/JournalItems";
 
 export default {
-  name: 'App',  
+  name: "App",
   components: {
-    JournalItems
+    JournalItems,
   },
   data() {
     return {
       journal_items: [],
-    }
+    };
   },
   created() {
     this.journal_items = [
@@ -28,37 +28,51 @@ export default {
         id: 1,
         title: "Gym",
         note: "push day",
-        checkmark: true
+        checkmark: true,
       },
       {
         id: 2,
         title: "Reading",
         note: "Cryptonomicon, Neal Stephenson",
-        checkmark: false
+        checkmark: false,
       },
       {
         id: 3,
         title: "shopping",
         note: "need new shoes",
-        checkmark: null
+        checkmark: null,
       },
-    ]
+    ];
   },
   methods: {
+    updateJournalItem(id, journal_item_updated) {
+      this.journal_items = this.journal_items.map((journal_item) =>
+        journal_item.id === id
+          ? journal_item_updated
+          : journal_item
+      );
+      const log_item = this.journal_items.filter((journal_item) => journal_item.id == id)      
+      console.log(log_item[0])
+    },
+    deleteJournalItem(id) {
+      this.journal_items = this.journal_items.filter((journal_item) => journal_item.id !== id)
+    },
     flipCompletion(id) {
-      console.log(id)
-      this.journal_items = this.journal_items.map((journal_item) => journal_item.id === id ? {
-        ...journal_item, checkmark: !journal_item.checkmark} : journal_item
-      )
-      console.log(this.journal_items)
-    }
-  }
-}
+      this.journal_items = this.journal_items.map((journal_item) =>
+        journal_item.id === id
+          ? {
+              ...journal_item,
+              checkmark: !journal_item.checkmark,
+            }
+          : journal_item
+      );
+      console.log(this.journal_items);
+    },
+  },
+};
 </script>
 
 <style>
-
-
 .container {
   max-width: 500px;
   margin: 30px auto;
