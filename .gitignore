@@ -1,0 +1,4 @@
+.vscode/
+journal.venv/
+src/journal_app/__pycache__
+sql_app.db
